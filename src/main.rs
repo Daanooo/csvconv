@@ -12,14 +12,9 @@ fn main() {
         return;
     }
 
-    let lines = match open_csv(&args[1]) {
-        Err(err) => panic!("{}", err),
-        Ok(lines) => lines,
-    };
+    let lines = open_csv(&args[1]).unwrap_or_else(|err| panic!("{}", err));
 
-    if let Err(err) = make_json(lines) {
-        panic!("{}", err);
-    }
+    make_json(lines).unwrap_or_else(|err| panic!("{}", err));
 }
 
 fn make_json(records: Vec<HashMap<String, String>>) -> Result<(), Box<dyn Error>> {
